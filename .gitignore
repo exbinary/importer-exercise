@@ -1,6 +1,7 @@
 /.bundle
 /db/*.sqlite3
 /db/*.sqlite3-journal
+/.env
 /log/*.log
 /notes.md
 /tmp

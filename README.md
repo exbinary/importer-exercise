@@ -37,10 +37,13 @@ tab-delimited Sales data into a relational database.
 # todo: document the following:
 
 * Ruby version
+  - 2.0.0
+  - 1.9.3?
 
 * System dependencies
 
 * Configuration
+  - .env
 
 * Database creation
 
