@@ -2,7 +2,7 @@ require 'ostruct'
 class ImportsController < ApplicationController
 
   def index
-    # todo: implement
+    @imports = Import.where(completed: true).order(created_at: :desc).take(10)
   end
 
   def new
@@ -10,18 +10,12 @@ class ImportsController < ApplicationController
 
   def create
     @import = importer.import(params[:file].read)
-    flash.now[:notice] = 'Hooray! - The file imported just fine.'
-    render :show
+    flash[:notice] = 'Hooray! - The file imported just fine. Its contents are summarized below'
+    redirect_to imports_path
   end
 
   def show
     # todo: implement
-    unless @import
-      @import = OpenStruct.new
-      @import.record_count =  11
-      @import.gross_revenue =  22.0
-      @import.created_at =  DateTime.now
-    end
   end
 
   private

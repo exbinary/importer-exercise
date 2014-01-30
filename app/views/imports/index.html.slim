@@ -1,4 +1,19 @@
-/ todo: implement
+- provide :heading
+  h1
+    ' Summaries
+    small of the ten most recently imported files
 
-h1 Imports#index
-p Find me in app/views/imports/index.html.slim
+.table-responsive
+  table.table
+    thead
+      td Imported On
+      td Number of Records
+      td Gross Revenue
+    tbody
+      - @imports.each do |import|
+        tr
+          td= l import.created_at, format: :long
+          td= import.record_count
+          td
+            = currency_symbol
+            = import.gross_revenue
