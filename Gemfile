@@ -24,6 +24,7 @@ group :development, :test do
   gem 'guard-spork'
   gem 'pry-rails'
   gem 'rspec-rails'
+  gem 'shoulda-matchers'
   gem 'spork-rails'
 end
 
