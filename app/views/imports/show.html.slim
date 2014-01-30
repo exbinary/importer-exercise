@@ -1,0 +1,18 @@
+- provide :heading
+  h1
+    ' Summary
+    small of imported file
+
+.table-responsive
+  table.table
+    thead
+      td Imported On
+      td Number of Records
+      td Gross Revenue
+    tbody
+      tr
+        td= l @summary.created_at, format: :long
+        td= @summary.record_count
+        td
+          = currency_symbol
+          = @summary.gross_revenue

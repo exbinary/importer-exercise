@@ -1,0 +1,15 @@
+- provide :heading
+  h1
+    ' Import
+    small a file
+
+p.lead Choose a file and hit Import.  We'll do the rest...
+p
+  ' A sample file is included in the project distribution at:
+  <code>spec/fixtures/example_input.tab</code>
+
+== form_tag imports_path, multipart: true, id: 'upload-form'
+  .form-group
+    == label_tag :file, 'Choose a file to Import', class: 'sr-only'
+    == file_field_tag :file
+  button.btn.btn-default type="submit" Import

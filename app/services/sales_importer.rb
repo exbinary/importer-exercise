@@ -13,9 +13,10 @@ class SalesImporter
   private
 
     class ImportSummary 
-      attr_accessor :record_count, :gross_revenue
+      attr_accessor :record_count, :gross_revenue, :created_at
 
       def initialize
+        @created_at = DateTime.now
         @record_count = 0
         @gross_revenue = Money.new(0)
       end

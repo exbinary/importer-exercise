@@ -5,6 +5,7 @@
 
 p.lead What would you like to do?
 
-ul
-  li Upload a file for importing,
-  li Look over sales records that have already been imported
+p
+  == link_to 'Upload a file for importing', new_import_path
+p
+  == link_to 'Look at the list of previous imports', imports_path
