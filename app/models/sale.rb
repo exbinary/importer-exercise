@@ -5,4 +5,8 @@ class Sale < ActiveRecord::Base
   monetize   :price_cents
 
   validates :purchaser, :merchant, :item, :price, :count, presence: true
+
+  def total
+    self.price * self.count
+  end
 end
