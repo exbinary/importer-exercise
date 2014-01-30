@@ -7,9 +7,9 @@ tab-delimited Sales data into a relational database.
 
 ### Core requirements
 - <del> create normalized models (Purchaser, Merchant, Item, Sale) </del>
-- create SalesImporter service
+- <del> create SalesImporter service
     - rudimentary synchronous import - won't scale
-    - no error-handling
+    - no error-handling </del>
 - put together site layout, minimal styling
 - get upload working, connect to SalesImporter
     - create summary page (total gross revenue)

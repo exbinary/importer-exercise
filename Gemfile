@@ -31,6 +31,11 @@ group :development, :test do
   gem 'spork-rails'
 end
 
+group :development do
+  gem 'slim-rails'
+  gem 'rails_layout'
+end
+
 group :doc do
   # bundle exec rake doc:rails generates the API under doc/api.
   gem 'sdoc', require: false
