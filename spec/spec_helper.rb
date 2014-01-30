@@ -41,31 +41,20 @@ Spork.prefork do
     #     --seed 1234
     config.order = "random"
 
-    # Strategies for keeping a clean slate between specs
-    DatabaseCleaner.tap do |db|
-      config.before(:suite) do
-        db.clean_with(:truncation)
-      end
-
-      config.before(:each) do
-        db.strategy = :transaction
-      end
-
-      config.before(:each, truncate: true) do
-        db.strategy = :truncation
-      end
-
-      config.before(:each) do
-        db.start
-      end
-
-      config.after(:each) do
-        db.clean
-      end
-    end
   end
 end
 
 Spork.each_run do
   ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
+
+  RSpec.configure do |config|
+    # Strategies for keeping a clean slate between specs
+    DatabaseCleaner.tap do |db|
+      config.before(:suite)                { db.clean_with(:truncation) }
+      config.before(:each)                 { db.strategy = :transaction }
+      config.before(:each, truncate: true) { db.strategy = :truncation  }
+      config.before(:each)                 { db.start                   }
+      config.after (:each)                 { db.clean                   }
+    end
+  end
 end
