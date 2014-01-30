@@ -1,55 +1,40 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
+ruby "2.0.0"
 
-# todo: add version constraints
-
-ruby '2.0.0'
-gem 'rails', '4.0.2'
-
-gem 'bootstrap-sass'
-gem 'coffee-rails', '~> 4.0.0'
-gem 'devise'
-gem 'dotenv-rails'
-gem 'jbuilder', '~> 1.2'
-gem 'jquery-rails'
-gem 'money', '~> 5.0'
-gem 'money-rails'
-gem 'sass-rails', '~> 4.0.0'
-gem 'slim'
-gem 'sqlite3'
-gem 'thin'
-gem 'turbolinks'
-gem 'uglifier', '>= 1.3.0'
+gem "rails", "~> 4.0.2"
+gem "bootstrap-sass", "~> 3.0.3.0"
+gem "coffee-rails", "~> 4.0.1"
+gem "devise", "~> 3.2.2"
+gem "dotenv-rails", "~> 0.9.0"
+gem "jbuilder", "~> 1.5.3"
+gem "jquery-rails", "~> 3.0.4"
+gem "money", "~> 5.1.1"
+gem "money-rails", "~> 0.8.1"
+gem "sass-rails", "~> 4.0.1"
+gem "slim", "~> 2.0.2"
+gem "sqlite3", "~> 1.3.8"
+gem "thin", "~> 1.6.1"
+gem "turbolinks", "~> 2.2.0"
+gem "uglifier", "~> 2.4.0"
 
 group :development, :test do
-  gem 'database_cleaner'
-  gem 'growl'
-  gem 'guard-ctags-bundler'
-  gem 'guard-rspec'
-  gem 'guard-spork'
-  gem 'pry-rails'
-  gem 'rspec-rails'
-  gem 'shoulda-matchers'
-  gem 'spork-rails'
+  gem "database_cleaner", "~> 1.2.0"
+  gem "growl", "~> 1.0.3"
+  gem "guard-ctags-bundler", "~> 1.0.1"
+  gem "guard-rspec", "~> 4.2.5"
+  gem "guard-spork", "~> 1.5.1"
+  gem "pry-rails", "~> 0.3.2"
+  gem "rspec-rails", "~> 2.14.1"
+  gem "shoulda-matchers", "~> 2.5.0"
+  gem "spork-rails", "~> 4.0.0"
 end
 
 group :development do
-  gem 'slim-rails'
-  gem 'rails_layout'
+  gem "slim-rails", "~> 2.0.4"
+  gem "rails_layout", "~> 1.0.5"
 end
 
 group :doc do
-  # bundle exec rake doc:rails generates the API under doc/api.
-  gem 'sdoc', require: false
+  gem "sdoc", "~> 0.4.0", {:require=>false}
 end
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt-ruby', '~> 3.1.2'
-
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
