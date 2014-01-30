@@ -12,7 +12,7 @@
     tbody
       - @imports.each do |import|
         tr
-          td= l import.created_at, format: :long
+          td= l import.created_at.getlocal, format: :long
           td= import.record_count
           td
             = currency_symbol

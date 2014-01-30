@@ -1,8 +1,11 @@
 require 'ostruct'
 class ImportsController < ApplicationController
 
+  before_filter :authenticate_user!
+
   def index
     @imports = Import.where(completed: true).order(created_at: :desc).take(10)
+    flash.now[:notice] = 'No files have been imported yet' if @imports.empty?
   end
 
   def new
