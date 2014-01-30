@@ -83,17 +83,40 @@ describe SalesImporter do
       expect(Merchant.count ).to eq(3)
       expect(Item.count     ).to eq(3)
       expect(Sale.count     ).to eq(4)
+      expect(Import.count   ).to eq(1)
+    end
+
+    it 'marks the Import as completed' do
+      expect(@results).to be_completed
     end
 
   end
 
-  describe 'atomicity' do
+  describe 'atomicity', truncate: true do
     # note: the truncate flag above ensures this spec isn't run inside a transaction: see spec_helper
-    it 'rolls back if an error occurs', truncate: true do
-      expect { import(price: 'NaN') }.to raise_error
-      [Purchaser, Merchant, Item, Sale].each do |model|
+
+    before do
+      begin
+        import(price: 'NaN')
+      rescue ActiveRecord::RecordInvalid => e
+        @error = e
+      end
+    end
+
+    it 'raises an error when a record is invalid' do
+      # todo: add ability to skip bad record
+      expect(@error.record.errors[:price]).to have(1).error
+    end
+
+    [Purchaser, Merchant, Item, Sale].each do |model|
+      it "rolls back #{model} if an error occurs" do
         expect(model.count).to eq(0)
       end
+    end
+
+    it 'saves an Import object marked incomplete' do
+      expect(Import.count).to eq(1)
+      expect(Import.first).not_to be_completed
     end
   end
 

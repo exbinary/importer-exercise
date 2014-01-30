@@ -11,8 +11,8 @@
       td Gross Revenue
     tbody
       tr
-        td= l @summary.created_at, format: :long
-        td= @summary.record_count
+        td= l @import.created_at, format: :long
+        td= @import.record_count
         td
           = currency_symbol
-          = @summary.gross_revenue
+          = @import.gross_revenue

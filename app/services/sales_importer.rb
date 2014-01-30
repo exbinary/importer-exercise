@@ -3,31 +3,14 @@ require 'csv'
 class SalesImporter
 
   def import(io)
-    csv = CSV.new(io, col_sep: "\t", headers: true)
-    csv.reduce(ImportSummary.new) do |summary, row|
-      sale = process(row)
-      summary << sale.total
+    Import.create!.tap do |import|
+      csv = CSV.new(io, col_sep: "\t", headers: true)
+      csv.each() {|row| import << process(row).total }
+      import.update!(completed: true)
     end
   end
 
   private
-
-    class ImportSummary 
-      attr_accessor :record_count, :gross_revenue, :created_at
-
-      def initialize
-        @created_at = DateTime.now
-        @record_count = 0
-        @gross_revenue = Money.new(0)
-      end
-
-      def <<(sale_total)
-        self.record_count += 1
-        self.gross_revenue += sale_total
-        self
-      end
-    end
-
 
     def process(row)
       # todo: error handling - need some way to store and skip failing rows

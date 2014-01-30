@@ -11,7 +11,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140130142123) do
+ActiveRecord::Schema.define(version: 20140130161205) do
+
+  create_table "imports", force: true do |t|
+    t.integer  "record_count",        default: 0
+    t.integer  "gross_revenue_cents", default: 0
+    t.boolean  "completed",           default: false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "items", force: true do |t|
     t.string   "description"
