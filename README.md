@@ -3,24 +3,93 @@
 This Rails application is an exercise showing how we might import and normalize 
 tab-delimited Sales data into a relational database.
 
-# Gameplan: tasks in priority order
+
+## Major Dependencies
+
+- `Ruby 2.0.0p247` (May work on 1.9+, but not tested there)
+- `Rails 4.0`
+- `bundler`
+- All other dependencies are gems that bundler should take care of.
+
+
+## Installation Instructions
+
+These instructions are writen for an audience of engineers familiar with ruby and rails.
+They also only cover installing and running the app in a development environment.
+Improving the documentation to cover production environments and an end-user audience
+is a future task.
+
+#### Download and install
+Assuming you already have `git`, `ruby` and `bundler` on your system:
+
+    # download the repository
+    git clone https://github.com/exbinary/importer-exercise
+
+    # run bundler to set up dependencies
+    # if you use rvm gemsets, switch to a new gemset before running bundle
+    cd importer-exercise && bundle install
+
+#### Environment variables
+There are a couple of environment variables that are not checked into the source-code
+repository since they would compromise security. They can be set up locally by running:
+
+    rake env:init
+
+#### Database initialization
+
+    rake db:migrate
+
+The app is configured to create and use a locals `sqlite3` database.  This can be
+configured in `config/database.yml` to use something else.  Note that you will also
+need to add gem dependencies for the appropriate adapter in `Gemfile` and run 
+`bundle install`, at a minimum, if you choose to change the db settings.
+    
+#### And we're off...!
+That's it! Start the app (in development mode) with:
+
+    rails server
+
+    # or if you're working on a public network,
+    # make sure you're not opening up your machine!
+    rails s --bind 127.0.0.1
+
+Browse to (http://localhost:3000) to check out the sample app.
+
+
+## Running the test suite
+
+After following the installation instructions:
+
+    rake db:migrate RAILS_ENV=test
+    rspec
+
+The app also uses spork to speed up the testing cycle.
+Either run spork in a separate process and then:
+
+    rspec --drb
+
+Or use `guard` (also included) to keep a running process that will load
+spork, watch for changes to source files and re-run specs automatically:
+
+
+## Task-list in order of priority
 
 ### Core requirements
 - <del> create normalized models (Purchaser, Merchant, Item, Sale) </del>
-- <del> create SalesImporter service
-    - rudimentary synchronous import - won't scale
-    - no error-handling </del>
-- put together site layout, minimal styling
-- get upload working, connect to SalesImporter
-    - create summary page (total gross revenue)
-    - introduce Import model?
-- write up installation instructions
+- <del> create SalesImporter service </del>
+    - <del> rudimentary synchronous import - won't scale </del>
+    - <del> no error-handling </del>
+- <del> put together site layout, minimal styling </del>
+- <del> get upload working, connect to SalesImporter </del>
+    - <del> create page to show completed imports </del>
+    - <del> introduce Import model </del>
+- <del> write up installation instructions (for engineers) </del>
 
 ### Extra features (i'll probably get to these)
-- add Devise
+- <del> add Devise </del>
 - **background import**
+    - install paperclip
     - extract import into resque worker
-    - create page to show completed imports
     - store rows that fail import (validation/errors)
 - run brakeman, other security, quality metrics
 - style Devise views
@@ -30,30 +99,10 @@ tab-delimited Sales data into a relational database.
 - make summary page responsive, list completed imports
 - **benchmark import, try bulk insert (raw sql)**
 - create import detail page, link to purchases
+- enhance documentation
+    - add instructions for deploying to a production env.
+    - add instructions for installing ruby
 - add some serious styling
 - benchmark upload, explore options
 - deploy demo somewhere public
-
-
-# todo: document the following:
-
-* Ruby version
-  - 2.0.0
-  - 1.9.3?
-
-* System dependencies
-
-* Configuration
-  - .env
-  - mailer setting for host (devise)
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
 
