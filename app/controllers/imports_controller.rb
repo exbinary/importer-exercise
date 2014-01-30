@@ -12,9 +12,15 @@ class ImportsController < ApplicationController
   end
 
   def create
-    @import = importer.import(params[:file].read)
-    flash[:notice] = 'Hooray! - The file imported just fine. Its contents are summarized below'
-    redirect_to imports_path
+    # todo: this needs cleaning up, but wait for backgrounding feature.
+    if params[:file]
+      @import = importer.import(params[:file].read)
+      flash[:notice] = 'Hooray! - The file imported just fine. Its contents are summarized below'
+      redirect_to imports_path
+    else
+      flash.now[:error] = 'Please Choose a File to import'
+      render :new
+    end
   end
 
   def show
