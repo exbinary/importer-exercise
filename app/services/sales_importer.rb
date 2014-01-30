@@ -18,8 +18,14 @@ class SalesImporter
 
   def self.import(io)
     summary = ImportSummary.new
-    CSV.parse(io, col_sep: "\t", headers: true) do |row|
-      sale = Sale.new(
+    CSV.new(io, col_sep: "\t", headers: true).each do |row|
+      purchaser = Purchaser.find_or_create_by!(name: row['purchaser name'])
+      merchant = Merchant.find_or_create_by!(name: row['merchant name'], address: row['merchant address'])
+      item = Item.find_or_create_by!(description: row['item description'])
+      sale = Sale.create!(
+        purchaser: purchaser,
+        merchant: merchant,
+        item: item,
         price: row['item price'],
         count: row['purchase count']
       )
