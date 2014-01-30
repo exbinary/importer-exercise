@@ -7,6 +7,7 @@ gem 'rails', '4.0.2'
 
 gem 'bootstrap-sass'
 gem 'coffee-rails', '~> 4.0.0'
+gem 'devise'
 gem 'dotenv-rails'
 gem 'jbuilder', '~> 1.2'
 gem 'jquery-rails'

@@ -45,6 +45,7 @@ tab-delimited Sales data into a relational database.
 
 * Configuration
   - .env
+  - mailer setting for host (devise)
 
 * Database creation
 

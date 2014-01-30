@@ -27,6 +27,7 @@ GEM
       tzinfo (~> 0.3.37)
     arel (4.0.1)
     atomic (1.1.14)
+    bcrypt-ruby (3.1.2)
     bootstrap-sass (3.0.3.0)
       sass (~> 3.2)
     builder (3.1.4)
@@ -44,6 +45,12 @@ GEM
     coffee-script-source (1.6.3)
     daemons (1.1.9)
     database_cleaner (1.2.0)
+    devise (3.2.2)
+      bcrypt-ruby (~> 3.0)
+      orm_adapter (~> 0.1)
+      railties (>= 3.2.6, < 5)
+      thread_safe (~> 0.1)
+      warden (~> 1.2.3)
     diff-lcs (1.2.5)
     dotenv (0.9.0)
     dotenv-rails (0.9.0)
@@ -96,6 +103,7 @@ GEM
       money (~> 5.1.0)
       railties (>= 3.0)
     multi_json (1.8.4)
+    orm_adapter (0.5.0)
     polyglot (0.3.3)
     pry (0.9.12.5)
       coderay (~> 1.0)
@@ -194,6 +202,8 @@ GEM
     uglifier (2.4.0)
       execjs (>= 0.3.0)
       json (>= 1.8.0)
+    warden (1.2.3)
+      rack (>= 1.0)
 
 PLATFORMS
   ruby
@@ -202,6 +212,7 @@ DEPENDENCIES
   bootstrap-sass
   coffee-rails (~> 4.0.0)
   database_cleaner
+  devise
   dotenv-rails
   growl
   guard-ctags-bundler
