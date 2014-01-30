@@ -6,7 +6,7 @@ tab-delimited Sales data into a relational database.
 # Gameplan: tasks in priority order
 
 ### Core requirements
-- create normalized models (Purchaser, Merchant, Item, Sale)
+- <del> create normalized models (Purchaser, Merchant, Item, Sale) </del>
 - create SalesImporter service
     - rudimentary synchronous import - won't scale
     - no error-handling
@@ -22,6 +22,7 @@ tab-delimited Sales data into a relational database.
     - extract import into resque worker
     - create page to show completed imports
     - store rows that fail import (validation/errors)
+- run brakeman, other security, quality metrics
 - style Devise views
 
 ### Bells and whistles (time permitting)
