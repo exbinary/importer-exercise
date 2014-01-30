@@ -1,23 +1,25 @@
-require 'ostruct'
 class ImportsController < ApplicationController
 
   before_filter :authenticate_user!
 
   def index
-    @imports = Import.where(completed: true).order(created_at: :desc).take(10)
+    @imports = Import.recently_completed
     flash.now[:notice] = 'No files have been imported yet' if @imports.empty?
   end
 
   def new
+    @import = Import.new  # todo: form_for needs this; is there a better way?
   end
 
   def create
-    # todo: this needs cleaning up, but wait for backgrounding feature.
-    if params[:file]
-      @import = importer.import(params[:file].read)
+    # todo: the word import is overused - rethink the naming!
+    @import = Import.new(import_params)
+    if @import.save
+      importer.import(@import)
       flash[:notice] = 'Hooray! - The file imported just fine. Its contents are summarized below'
       redirect_to imports_path
     else
+      # todo: create a _form_errors partial so we can just use the errors on the Import object.
       flash.now[:error] = 'Please Choose a File to import'
       render :new
     end
@@ -28,6 +30,10 @@ class ImportsController < ApplicationController
   end
 
   private
+
+    def import_params
+      params.fetch(:import, {}).permit(:file)
+    end
 
     def importer
       @importer ||= SalesImporter.new

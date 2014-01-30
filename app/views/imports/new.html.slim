@@ -8,8 +8,8 @@ p
   ' A sample file is included in the project distribution at:
   <code>spec/fixtures/example_input.tab</code>
 
-== form_tag imports_path, multipart: true, id: 'upload-form'
+== form_for @import, id: 'upload-form' do |f|
   .form-group
     == label_tag :file, 'Choose a file to Import', class: 'sr-only'
-    == file_field_tag :file
+    == f.file_field :file
   button.btn.btn-default type="submit" Import

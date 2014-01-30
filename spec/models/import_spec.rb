@@ -11,4 +11,7 @@ describe Import do
     expect(import.gross_revenue).to eq(0)
   end
 
+  it 'should not be valid if a file is not provided' do
+    expect(Import.new).to have(1).error_on(:file)
+  end
 end

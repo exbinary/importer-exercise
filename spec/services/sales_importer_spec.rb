@@ -64,7 +64,7 @@ describe SalesImporter do
     before(:all) do
       # import only once since all the specs are just verifying that it worked correctly
       File.open(Rails.root.join('spec', 'fixtures', 'example_input.tab')) do |file|
-        @results = SalesImporter.new.import(file) # using sales_importer causes rspec warnings...
+        @results = import_from_io(file, SalesImporter.new) 
       end
     end
 
@@ -121,8 +121,14 @@ describe SalesImporter do
   end
 
   def import(fields)
-    sales_importer.import(build_row_with_headers(SampleValues.merge(fields)))
+    data = build_row_with_headers(SampleValues.merge(fields))
+    import_from_io(StringIO.new(data))
   end
+
+  def import_from_io(io, importer = sales_importer)
+    importer.import(Import.create!(file: io))
+  end
+
 
   def build_row_with_headers(fields)
     row = %I(purchaser description price count address merchant).map{|key| fields[key]}.join("\t")

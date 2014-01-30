@@ -2,12 +2,14 @@ require 'csv'
 
 class SalesImporter
 
-  def import(io)
-    Import.create!.tap do |import|
-      csv = CSV.new(io, col_sep: "\t", headers: true)
-      csv.each() {|row| import << process(row).total }
-      import.update!(completed: true)
+  # @param collector <Import> An Import instance that has already been persisted
+  def import(collector)
+    # todo: smells of feature envy: maybe this functionality can move to Import?
+    CSV.foreach(collector.file_path, col_sep: "\t", headers: true) do |row|
+      collector << process(row).total
     end
+    collector.update!(completed: true)
+    collector
   end
 
   private
