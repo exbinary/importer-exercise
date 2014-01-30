@@ -1,15 +1,10 @@
 require 'spec_helper'
+require 'database_cleaner'
 
 describe SalesImporter do
 
-  # todo:
-  #   - rename DefaultValues
-  #   - extract row builder
-  #   - spec for transaction around each row
-  #   - refactor service
-  #   - refactor spec
-
-  DefaultValues = {
+  HeaderRow = "purchaser name\titem description\titem price\tpurchase count\tmerchant address\tmerchant name"
+  SampleValues = {
     purchaser: 'Prchsr',
     description: 'Dscrptn',
     price: '10.0',
@@ -18,9 +13,11 @@ describe SalesImporter do
     merchant: 'Mrchnt'
   }
 
+  let!(:sales_importer) { SalesImporter.new }
+
   describe 'saves normalized records' do
     subject do
-      -> { import(build({})) }
+      -> { import(SampleValues) }
     end
 
     it { should change(Purchaser.where(name: 'Prchsr'),                   :count).by(1) }
@@ -31,33 +28,33 @@ describe SalesImporter do
 
   describe 'checks for existing matching records' do
     before do
-      import(build({ purchaser: 'p', description: 'd', merchant: 'm' }))
+      import(purchaser: 'p', description: 'd', merchant: 'm')
     end
 
     it 'uses existing Purchaser with the same name' do
-      expect { import(build({ purchaser: 'p' })) }.not_to change(Purchaser, :count)
+      expect { import(purchaser: 'p') }.not_to change(Purchaser, :count)
     end
 
-    it 'connects the existing Purchaser to the Sale' do
-      expect { import(build({ purchaser: 'p' })) }
+    it 'connects existing Purchaser to the Sale' do
+      expect { import(purchaser: 'p') }
         .to change(Sale.where(purchaser: Purchaser.find_by(name: 'p')), :count)
     end
 
     it 'uses existing Merchant with the same name' do
-      expect { import(build({ merchant: 'm' })) }.not_to change(Merchant, :count)
+      expect { import(merchant: 'm') }.not_to change(Merchant, :count)
     end
 
-    it 'connects the existing Merchant to the Sale' do
-      expect { import(build({ merchant: 'm' })) }
+    it 'connects existing Merchant to the Sale' do
+      expect { import(merchant: 'm') }
         .to change(Sale.where(merchant: Merchant.find_by(name: 'm')), :count)
     end
 
     it 'uses existing Item with the same description' do
-      expect { import(build({ description: 'd' })) }.not_to change(Item, :count)
+      expect { import(description: 'd') }.not_to change(Item, :count)
     end
 
-    it 'connects the existing Merchant to the Sale' do
-      expect { import(build({ description: 'd' })) }
+    it 'connects existing Merchant to the Sale' do
+      expect { import(description: 'd') }
         .to change(Sale.where(item: Item.find_by(description: 'd')), :count)
     end
   end
@@ -65,18 +62,10 @@ describe SalesImporter do
   describe 'with the sample file' do
 
     before(:all) do
-      # rspec will wrap each example with a transaction and roll it back,
-      # but not with before(:all) blocks
-      clean_tables  
-
       # import only once since all the specs are just verifying that it worked correctly
       File.open(Rails.root.join('spec', 'fixtures', 'example_input.tab')) do |file|
-        @results = import(file)
+        @results = SalesImporter.new.import(file) # using sales_importer causes rspec warnings...
       end
-    end
-
-    after(:all) do
-      clean_tables
     end
 
     it 'imports the correct number of records' do
@@ -96,22 +85,25 @@ describe SalesImporter do
       expect(Sale.count     ).to eq(4)
     end
 
-    def clean_tables
-      [Sale, Purchaser, Merchant, Item].each do |model|
-        model.delete_all
+  end
+
+  describe 'atomicity' do
+    # note: the truncate flag above ensures this spec isn't run inside a transaction: see spec_helper
+    it 'rolls back if an error occurs', truncate: true do
+      expect { import(price: 'NaN') }.to raise_error
+      [Purchaser, Merchant, Item, Sale].each do |model|
+        expect(model.count).to eq(0)
       end
     end
   end
 
-  def build(vals)
-    vals = DefaultValues.merge(vals)
-    headers = "purchaser name\titem description\titem price\tpurchase count\tmerchant address\tmerchant name\n"
-    line = %I(purchaser description price count address merchant).map{|key| vals[key]}.join("\t")
-    headers + line
+  def import(fields)
+    sales_importer.import(build_row_with_headers(SampleValues.merge(fields)))
   end
 
-  def import(io)
-    SalesImporter.import(io)
+  def build_row_with_headers(fields)
+    row = %I(purchaser description price count address merchant).map{|key| fields[key]}.join("\t")
+    "#{HeaderRow}\n#{row}\n"
   end
 
 end
