@@ -1,0 +1,40 @@
+@import 'framework_and_overrides'
+
+/* universal */
+
+// make all images responsive by default
+img
+  @extend .img-responsive
+  margin: 0 auto
+
+
+/* typography */
+
+h1, h2, h3
+  text-transform: uppercase
+
+
+/* header */
+
+#header-nav-container
+  @extend .navbar
+  @extend .navbar-default
+
+  font-family: $font-family-sans-serif
+  text-transform: uppercase
+
+  .header-links
+    @extend .collapse
+    @extend .navbar-collapse
+
+.nav-link-list
+  @extend .nav
+  @extend .nav-pills
+  @extend .navbar-right
+
+
+/* main */
+
+main
+  padding: 0 20px
+
