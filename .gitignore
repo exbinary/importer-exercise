@@ -6,4 +6,5 @@
 /db/*.sqlite3-journal
 /log/*.log
 /notes.md
+/public/system/imports
 /tmp

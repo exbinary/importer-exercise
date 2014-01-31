@@ -8,14 +8,13 @@ class ImportsController < ApplicationController
   end
 
   def new
-    @import = Import.new  # todo: form_for needs this; is there a better way?
+    @import = Import.new
   end
 
   def create
-    # todo: the word import is overused - rethink the naming!
     @import = Import.new(import_params)
     if @import.save
-      importer.import(@import)
+      @import.process_file
       flash[:notice] = 'Hooray! - The file imported just fine. Its contents are summarized below'
       redirect_to imports_path
     else
@@ -23,10 +22,6 @@ class ImportsController < ApplicationController
       flash.now[:error] = 'Please Choose a File to import'
       render :new
     end
-  end
-
-  def show
-    # todo: implement
   end
 
   private

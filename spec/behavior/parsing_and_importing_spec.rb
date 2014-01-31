@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'database_cleaner'
 
-describe SalesImporter do
+describe Import, 'Parsing and Importing a File' do
 
   HeaderRow = "purchaser name\titem description\titem price\tpurchase count\tmerchant address\tmerchant name"
   SampleValues = {
@@ -12,8 +12,6 @@ describe SalesImporter do
     address: 'Addrss',
     merchant: 'Mrchnt'
   }
-
-  let!(:sales_importer) { SalesImporter.new }
 
   describe 'saves normalized records' do
     subject do
@@ -64,7 +62,7 @@ describe SalesImporter do
     before(:all) do
       # import only once since all the specs are just verifying that it worked correctly
       File.open(Rails.root.join('spec', 'fixtures', 'example_input.tab')) do |file|
-        @results = import_from_io(file, SalesImporter.new) 
+        @results = import_from_io(file) 
       end
     end
 
@@ -125,8 +123,8 @@ describe SalesImporter do
     import_from_io(StringIO.new(data))
   end
 
-  def import_from_io(io, importer = sales_importer)
-    importer.import(Import.create!(file: io))
+  def import_from_io(io)
+    Import.create!(file: io).process_file
   end
 
 
