@@ -9,27 +9,28 @@ class Import < ActiveRecord::Base
 
   def process_file
     parser.each_sale(file_path) do |data|
-      self << sale_loader.load(data).total
+      aggregate(sale_loader.load(data))
     end
     update!(completed: true)
     self
   end
 
-  def <<(sale_total)
-    self.record_count += 1
-    self.gross_revenue += sale_total
-    self
-  end
+  private
 
-  def file_path
-    self.file.path
-  end
+    def aggregate(sale)
+      self.record_count += 1
+      self.gross_revenue += sale.total
+    end
 
-  def parser
-    @parser ||= ImportFormatParser.new
-  end
+    def file_path
+      self.file.path
+    end
 
-  def sale_loader
-    @sale_loader ||= SaleLoader.new
-  end
+    def parser
+      @parser ||= ImportFormatParser.new
+    end
+
+    def sale_loader
+      @sale_loader ||= SaleLoader.new
+    end
 end

@@ -88,8 +88,8 @@ spork, watch for changes to source files and re-run specs automatically:
 ### Extra features (i'll probably get to these)
 - <del> add Devise </del>
 - **background import**
-    - install paperclip
-    - extract import into resque worker
+    - <del> install paperclip </del>
+    - <del> extract import into resque worker (asynch branch) </del>
     - store rows that fail import (validation/errors)
 - run brakeman, other security, quality metrics
 - style Devise views
