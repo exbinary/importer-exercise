@@ -9,6 +9,7 @@ tab-delimited Sales data into a relational database.
 - `Ruby 2.0.0p247` (May work on 1.9+, but not tested there)
 - `Rails 4.0`
 - `bundler`
+- Redis (with resque)
 - All other dependencies are gems that bundler should take care of.
 
 
@@ -44,6 +45,28 @@ configured in `config/database.yml` to use something else.  Note that you will a
 need to add gem dependencies for the appropriate adapter in `Gemfile` and run 
 `bundle install`, at a minimum, if you choose to change the db settings.
     
+#### Redis and resque
+
+This version of the app (the `asynch` branch) uses `resque` to offline the parsing
+and loading of data.  This requires setting up `Redis` and running the `resque`
+worker.
+
+Install [Redis](http://redis.io) on the machine or use an online provider such as
+[RedisToGo](http://redistogo.com/).
+
+On Mac OS X, using brew:
+
+    brew install redis
+
+Set up launchd as instructed, or simply run it with
+
+    redis-server /usr/local/etc/redis.conf
+
+Once the redis server is ready, we have to start the `resque` workers
+
+    # from the app root directory,
+    rake resque:work QUEUE='*'
+
 #### And we're off...!
 That's it! Start the app (in development mode) with:
 

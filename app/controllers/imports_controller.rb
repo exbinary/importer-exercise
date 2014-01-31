@@ -14,8 +14,8 @@ class ImportsController < ApplicationController
   def create
     @import = Import.new(import_params)
     if @import.save
-      @import.process_file
-      flash[:notice] = 'Hooray! - The file imported just fine. Its contents are summarized below'
+      Resque.enqueue(BackgroundImporter, @import.id)
+      flash[:notice] = 'Your file has been uploaded and will be processed shortly.  Check back in a few minutes.'
       redirect_to imports_path
     else
       # todo: create a _form_errors partial so we can just use the errors on the Import object.
