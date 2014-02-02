@@ -113,6 +113,8 @@ GEM
       activesupport (>= 3.0.0)
       cocaine (~> 0.5.3)
       mime-types
+    parsley-rails (1.2.3.0)
+      railties (>= 3.0.0)
     polyglot (0.3.3)
     pry (0.9.12.5)
       coderay (~> 1.0)
@@ -232,6 +234,7 @@ DEPENDENCIES
   money (~> 5.1.1)
   money-rails (~> 0.8.1)
   paperclip (~> 3.5.3)
+  parsley-rails (~> 1.2.3)
   pry-rails (~> 0.3.2)
   rails (~> 4.0.2)
   rails_layout (~> 1.0.5)
