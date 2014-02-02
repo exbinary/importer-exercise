@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'database_cleaner'
 
-describe Import, 'Parsing and Importing a File' do
+describe 'Parsing and Importing a File' do
 
   HeaderRow = "purchaser name\titem description\titem price\tpurchase count\tmerchant address\tmerchant name"
   SampleValues = {
@@ -15,7 +15,7 @@ describe Import, 'Parsing and Importing a File' do
 
   describe 'saves normalized records' do
     subject do
-      -> { import(SampleValues) }
+      -> { import_with(SampleValues) }
     end
 
     it { should change(Purchaser.where(name: 'Prchsr'),                   :count).by(1) }
@@ -26,33 +26,33 @@ describe Import, 'Parsing and Importing a File' do
 
   describe 'checks for existing matching records' do
     before do
-      import(purchaser: 'p', description: 'd', merchant: 'm')
+      import_with(purchaser: 'p', description: 'd', merchant: 'm')
     end
 
     it 'uses existing Purchaser with the same name' do
-      expect { import(purchaser: 'p') }.not_to change(Purchaser, :count)
+      expect { import_with(purchaser: 'p') }.not_to change(Purchaser, :count)
     end
 
     it 'connects existing Purchaser to the Sale' do
-      expect { import(purchaser: 'p') }
+      expect { import_with(purchaser: 'p') }
         .to change(Sale.where(purchaser: Purchaser.find_by(name: 'p')), :count)
     end
 
     it 'uses existing Merchant with the same name' do
-      expect { import(merchant: 'm') }.not_to change(Merchant, :count)
+      expect { import_with(merchant: 'm') }.not_to change(Merchant, :count)
     end
 
     it 'connects existing Merchant to the Sale' do
-      expect { import(merchant: 'm') }
+      expect { import_with(merchant: 'm') }
         .to change(Sale.where(merchant: Merchant.find_by(name: 'm')), :count)
     end
 
     it 'uses existing Item with the same description' do
-      expect { import(description: 'd') }.not_to change(Item, :count)
+      expect { import_with(description: 'd') }.not_to change(Item, :count)
     end
 
     it 'connects existing Merchant to the Sale' do
-      expect { import(description: 'd') }
+      expect { import_with(description: 'd') }
         .to change(Sale.where(item: Item.find_by(description: 'd')), :count)
     end
   end
@@ -60,13 +60,14 @@ describe Import, 'Parsing and Importing a File' do
   describe 'with the sample file' do
 
     before(:all) do
-      # import only once since all the specs are just verifying that it worked correctly
-      File.open(Rails.root.join('spec', 'fixtures', 'example_input.tab')) do |file|
-        @results = import_from_io(file) 
-      end
+      @sample_data = File.read(Rails.root.join('spec', 'fixtures', 'example_input.tab'))
     end
 
-    it 'imports the correct number of records' do
+    before(:each) do
+      @results = import_data(@sample_data)
+    end
+
+    it 'imports with the correct number of records' do
       expect(@results.record_count).to eq(4)
     end
 
@@ -95,7 +96,7 @@ describe Import, 'Parsing and Importing a File' do
 
     before do
       begin
-        import(price: 'NaN')
+        import_with(price: 'NaN')
       rescue ActiveRecord::RecordInvalid => e
         @error = e
       end
@@ -118,17 +119,17 @@ describe Import, 'Parsing and Importing a File' do
     end
   end
 
-  def import(fields)
-    data = build_row_with_headers(SampleValues.merge(fields))
-    import_from_io(StringIO.new(data))
+  def import_with(fields)
+    data = build_headers_and_one_row(SampleValues.merge(fields))
+    import_data(data)
   end
 
-  def import_from_io(io)
-    Import.create!(file: io).process_file
+  def import_data(data)
+    Import.create!(file: StringIO.new(data)).process_file
   end
 
 
-  def build_row_with_headers(fields)
+  def build_headers_and_one_row(fields)
     row = %I(purchaser description price count address merchant).map{|key| fields[key]}.join("\t")
     "#{HeaderRow}\n#{row}\n"
   end
