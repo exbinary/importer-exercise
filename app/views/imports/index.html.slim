@@ -1,14 +1,18 @@
-- provide :heading
-  h1
-    ' Summaries
-    small of the ten most recently imported files
+- provide :page_title
+  .row
+    h1
+      .col.two-thirds-md
+        ' Summaries
+        small of recently imported files
+      .col.one-third-md
+        =link_to 'Import another', new_import_path, id: 'import-another-btn'
 
 .table-responsive
-  table.table
+  table.table.table-hover
     thead
-      td Imported On
-      td Number of Records
-      td Gross Revenue
+      th Imported On
+      th Number of Records
+      th Gross Revenue
     tbody
       - @imports.each do |import|
         tr
@@ -17,3 +21,4 @@
           td
             = currency_symbol
             = import.gross_revenue
+

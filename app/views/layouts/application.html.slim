@@ -4,15 +4,18 @@ html
     title Sales Importer
     meta name="viewport"    content="width=device-width, initial-scale=1.0"
     meta name="description" content="Demo app for importing and normalizing tab delimited files"
-    == stylesheet_link_tag    :application, media: "all", "data-turbolinks-track" => true
     == javascript_include_tag :application,               "data-turbolinks-track" => true
+    == stylesheet_link_tag    :application, media: "all", "data-turbolinks-track" => true
+    == stylesheet_link_tag    params[:controller]
     == csrf_meta_tags
+    /[if lt IE 9]
+      script src="http://html5shim.googlecode.com/svn/trunk/html5.js"
   body
     .container
       header role='navigation'
         == render 'layouts/navigation'
       main role="main"
         .page-header
-          == content_for :heading
+          == content_for :page_title
         == render 'layouts/messages'
         == yield
