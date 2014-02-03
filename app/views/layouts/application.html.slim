@@ -13,9 +13,9 @@ html
   body
     .container
       header role='navigation'
-        == render 'layouts/navigation'
+        = render 'layouts/navigation'
       main role="main"
         .page-header
-          == content_for :page_title
-        == render 'layouts/messages'
-        == yield
+          = content_for :page_title
+        = render 'layouts/messages'
+        = yield
