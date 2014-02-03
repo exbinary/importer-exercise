@@ -10,6 +10,6 @@ p
 
 == form_for @import, id: 'upload-form', 'parsely-validate' => true do |f|
   .form-group
-    == label_tag :file, 'Choose a file to Import', class: 'sr-only'
+    == f.label :file, 'Choose a file to Import', class: 'sr-only'
     == f.file_field :file, required: true
   button.btn.btn-default type="submit" Import

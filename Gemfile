@@ -20,6 +20,7 @@ gem "turbolinks", "~> 2.2.0"
 gem "uglifier", "~> 2.4.0"
 
 group :development, :test do
+  gem "capybara", "~> 2.2.1"
   gem "database_cleaner", "~> 1.2.0"
   gem "growl", "~> 1.0.3"
   gem "guard-ctags-bundler", "~> 1.0.1"

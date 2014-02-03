@@ -19,7 +19,7 @@ class ImportsController < ApplicationController
       redirect_to imports_path
     else
       # todo: create a _form_errors partial so we can just use the errors on the Import object.
-      flash.now[:error] = 'Please Choose a File to import'
+      flash.now[:error] = 'Please Choose a File to Import'
       render :new
     end
   end

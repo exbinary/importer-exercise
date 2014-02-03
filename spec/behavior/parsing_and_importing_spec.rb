@@ -1,7 +1,7 @@
 require 'spec_helper'
-require 'database_cleaner'
 
 describe 'Parsing and Importing a File' do
+  include SpecHelpers
 
   HeaderRow = "purchaser name\titem description\titem price\tpurchase count\tmerchant address\tmerchant name"
   SampleValues = {
@@ -60,7 +60,7 @@ describe 'Parsing and Importing a File' do
   describe 'with the sample file' do
 
     before(:all) do
-      @sample_data = File.read(Rails.root.join('spec', 'fixtures', 'example_input.tab'))
+      @sample_data = File.read(sample_file_path)
     end
 
     before(:each) do
