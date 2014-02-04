@@ -3,22 +3,31 @@
     ' Sign
     small up
 
-= form_for resource, as: resource_name, url: registration_path(resource_name), 'parsley-validate' => true do |f|
+= form_for resource, as: resource_name, url: registration_path(resource_name) do |f|
   = devise_error_messages!
-  .row
-    .one-third-md
-      .form-group
+  .form-group
+    .row
+      .one-third-md
         = f.label :email, class: 'sr-only'
         = f.email_field :email, autofocus: true, class: 'form-control', placeholder: 'Email Address', required: true
-      .form-group
-        = f.label :password, class: 'sr-only'
-        = f.password_field :password, class: 'form-control', placeholder: 'Password',
-                           required: true, 'parsely-minlength' => 8
-      .form-group
+      .one-third-md
+        = f.label :email, class: 'error'
+  .form-group
+    .row
+      .one-third-md
+        = f.label :password, class: 'sr-only' 
+        = f.password_field :password, class: 'form-control', placeholder: 'Password', required: true
+      .one-third-md
+        = f.label :password, class: 'error'
+  .form-group
+    .row
+      .one-third-md
         = f.label :password_confirmation, class: 'sr-only'
-        = f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password',
-                           required: true, 'parsely-minlength' => 8, 'parsley-equalto' => 'user_password'
+        = f.password_field :password_confirmation, class: 'form-control', placeholder: 'Confirm Password', required: true
+      .one-third-md
+        = f.label :password_confirmation, class: 'error'
 
-      = f.submit "Sign up", class: 'btn btn-default'
-  / .one-third-md
-    = render "devise/shared/links"
+  .form-group
+    = f.submit "Sign up", class: 'btn btn-default'
+
+/ = render "devise/shared/links"

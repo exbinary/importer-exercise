@@ -52,3 +52,19 @@ h1, h2, h3
 main
   padding: 0 20px
 
+
+/* inline validation */
+
+label.error
+  // starts off hidden until the validator kicks in
+  display: none
+  padding-top: $padding-base-vertical
+  @extend .text-warning
+
+// label.error.valid
+  // background: url(image_path('tick_white.png')) left no-repeat
+  // padding: $padding-base-vertical $padding-base-horizontal 0
+  // height: $input-height-base - 6px
+  // margin-bottom: 0
+
+    

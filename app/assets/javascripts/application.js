@@ -14,5 +14,5 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require bootstrap
-//= require parsley
+//= require jquery.validate
 //= require_tree .
