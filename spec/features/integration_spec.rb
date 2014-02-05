@@ -60,7 +60,7 @@ describe 'The SaleImporter site', :integration, :truncate do
   def sign_up
     visit '/'
     click_link 'Log In'
-    click_link 'Sign up'
+    click_link 'Sign up', match: :first
     within("#new_user") do
       fill_in 'Email', :with => 'admin@example.com'
       fill_in 'Password', :with => 'password'
